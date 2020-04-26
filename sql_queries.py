@@ -1,10 +1,10 @@
 # DROP TABLES
 
-songplay_table_drop = "DROP TABLE SONGPLAYS"
-user_table_drop = "DROP TABLE USERS"
-song_table_drop = "DROP SONGS"
-artist_table_drop = "DROP TABLE ARTISTS"
-time_table_drop = "DROP TABLE TIME"
+songplay_table_drop = "DROP TABLE IF EXISTS SONGPLAYS"
+user_table_drop = "DROP TABLE IF EXISTS USERS"
+song_table_drop = "DROP TABLE IF EXISTS SONGS"
+artist_table_drop = "DROP TABLE IF EXISTS ARTISTS"
+time_table_drop = "DROP TABLE IF EXISTS TIME"
 
 # CREATE TABLES
 
@@ -28,7 +28,7 @@ user_table_create = ("""CREATE TABLE IF NOT EXISTS USERS (user_id int,
 	level varchar)
 """)
 
-song_table_create = ("""CREATE TABLE IF NOT EXISTS SONGS (song_id int, 
+song_table_create = ("""CREATE TABLE IF NOT EXISTS SONGS (song_id varchar, 
 	title varchar, 
 	artist_id varchar, 
 	year int, 
@@ -53,20 +53,50 @@ time_table_create = ("""CREATE TABLE IF NOT EXISTS TIME (start_time varchar,
 
 # INSERT RECORDS
 
-songplay_table_insert = ("""
+songplay_table_insert = ("""INSERT INTO SONGPLAYS (songplay_id,
+	start_time,
+    user_id,
+    level, 
+    song_id, 
+    artist_id, 
+    session_id, 
+    location, 
+    user_agent)
+	VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
 """)
 
-user_table_insert = ("""
+user_table_insert = ("""INSERT INTO USERS (user_id, 
+	first_name, 
+	last_name, 
+	gender, 
+	level)
+	VALUES (%s, %s, %s, %s, %s)
 """)
 
-song_table_insert = ("""
+song_table_insert = ("""INSERT INTO SONGS (song_id, 
+	title, 
+	artist_id, 
+	year, 
+	duration)
+	VALUES (%s, %s, %s, %s, %s)
 """)
 
-artist_table_insert = ("""
+artist_table_insert = ("""INSERT INTO ARTISTS (artist_id, 
+	name, 
+	location, 
+	latitude, 
+	longitude)
+	VALUES (%s, %s, %s, %s, %s)
 """)
 
 
-time_table_insert = ("""
+time_table_create = ("""CREATE TABLE IF NOT EXISTS TIME (start_time timestamp, 
+	hour int, 
+	day int, 
+	week int, 
+	month int, 
+	year int, 
+	weekday int)
 """)
 
 # FIND SONGS
