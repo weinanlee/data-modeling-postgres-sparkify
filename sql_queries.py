@@ -8,8 +8,8 @@ time_table_drop = "DROP TABLE IF EXISTS TIME"
 
 # CREATE TABLES
 
-songplay_table_create = ("""CREATE TABLE IF NOT EXISTS SONGPLAYS (songplay_id int,
-	start_time varchar,
+songplay_table_create = ("""CREATE TABLE IF NOT EXISTS SONGPLAYS (songplay_id varchar,
+	start_time timestamp,
     user_id int,
     level varchar, 
     song_id varchar, 
@@ -90,18 +90,24 @@ artist_table_insert = ("""INSERT INTO ARTISTS (artist_id,
 """)
 
 
-time_table_create = ("""CREATE TABLE IF NOT EXISTS TIME (start_time timestamp, 
+time_table_create = ("""INSERT INTO TIME (start_time timestamp, 
 	hour int, 
 	day int, 
 	week int, 
 	month int, 
 	year int, 
 	weekday int)
+	VALUES (%s, %s, %s, %s, %s, %s, %s)
 """)
 
 # FIND SONGS
 
 song_select = ("""
+	SELECT songs.song_id, artists.artist_id FROM 
+	songs JOIN artists ON 
+	songs.artist_id = artists.artist_id 
+	WHERE songs.title = %s AND 
+	artists.name=%s AND songs.duration=%s
 """)
 
 # QUERY LISTS
