@@ -7,7 +7,7 @@ A startup called Sparkify wants to analyze the data they've been collecting on s
 
 ## Project
 
-Created normalized tables  and stored into PostgreSQL. In addtition for analyzing user activity, Fact and Dimension tables must be created from songs metadata and user activity logs.
+Create normalized tables  and store them into PostgreSQL.  Create Fact and Dimension tables  from songs metadata and user activity logs for analyzing user activity.
 
 ## Files
 
@@ -57,7 +57,7 @@ And below is an example of what a single activity log in 2018-11-13-events.json,
 
 - Parse and read a song JSON file by using pandas.read_json function.
 - Select columns for song ID, title, artist ID, year, and duration from dataframe.
-- Execute an insert query to songs table in PostgreSQL.
+- Execute insert query to songs table in PostgreSQL.
   - If the song ID confliction is occured, do nothing.
 
 #### #2: artists table
@@ -103,4 +103,3 @@ Create tables and execute ETL.
 $ python create_tables.py
 $ python etl.py
 ```
-

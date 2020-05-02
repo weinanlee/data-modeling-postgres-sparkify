@@ -7,37 +7,47 @@ from sql_queries import *
 
 def process_song_file(cur, filepath):
     # open song file
-    df = 
+    df = pd.read_json(filepath, lines = True)
 
     # insert song record
-    song_data = 
+    song_data = df[['song_id', 'title', 'artist_id', 'year', 'duration']].values[0]
     cur.execute(song_table_insert, song_data)
     
     # insert artist record
-    artist_data = 
+    artist_data = df[['artist_id', 'artist_name', 'artist_location', 'artist_latitude', 'artist_longitude']].values[0]
     cur.execute(artist_table_insert, artist_data)
 
 
 def process_log_file(cur, filepath):
     # open log file
-    df = 
+    df = pd.read_json(filepath, lines = True)
 
     # filter by NextSong action
-    df = 
+    df = df[df.page == 'NextSong']
 
     # convert timestamp column to datetime
-    t = 
+    t = df.copy()
+    t['ts'] = pd.to_datetime(t['ts'],unit = 'ms')
     
     # insert time data records
-    time_data = 
-    column_labels = 
-    time_df = 
+    time_data = (t.ts, t.ts.dt.hour , t.ts.dt.day , t.ts.dt.dayofweek , t.ts.dt.month , t.ts.dt.year , t.ts.dt.weekday)
+    column_labels = ('timestamp', 'hour', 'day', 'week_of_year', 'month', 'year', 'weekday')
+    
+    time_dict = {"timestamp": t.ts, 
+    "hour": t.ts.dt.hour, 
+    "day": t.ts.dt.day,
+    "week_of_year": t.ts.dt.dayofweek,
+    "month" : t.ts.dt.month, 
+    "year" : t.ts.dt.year, 
+    "weekday": t.ts.dt.weekday}
+    
+    time_df = pd.DataFrame.from_dict(time_dict )
 
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
 
     # load user table
-    user_df = 
+    user_df = df[['userId', 'firstName', 'lastName', 'gender' , 'level']]
 
     # insert user records
     for i, row in user_df.iterrows():
@@ -56,7 +66,8 @@ def process_log_file(cur, filepath):
             songid, artistid = None, None
 
         # insert songplay record
-        songplay_data = 
+        songplay_data = (row.ts, row.userId, row.level, songid, artistid, row.sessionId, row.location, row.userAgent)
+   
         cur.execute(songplay_table_insert, songplay_data)
 
 
